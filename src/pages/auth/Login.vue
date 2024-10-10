@@ -22,35 +22,7 @@
         </div>
       </div>
 
-      <form @submit.prevent="handleSubmit(onSubmit)" class="space-y-4">
-        <div class="space-y-3">
-          <Label for="email" class="font-bold">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            v-model="values.email"
-            :class="{ 'border-red-500': errors.email }"
-          />
-          <p v-if="errors.email" class="text-red-500 text-sm">
-            {{ errors.email }}
-          </p>
-        </div>
-
-        <div class="space-y-3">
-          <Label for="password" class="font-bold">Mot de passe</Label>
-          <Input
-            id="password"
-            type="password"
-            v-model="values.password"
-            :class="{ 'border-red-500': errors.password }"
-          />
-          <p v-if="errors.password" class="text-red-500 text-sm">
-            {{ errors.password }}
-          </p>
-        </div>
-
-        <Button class="w-full" type="submit"> Se connecter </Button>
-      </form>
+      <LoginForm />
 
       <Separator class="w-full bg-muted-foreground" />
 
@@ -67,7 +39,7 @@
         <Button class="flex w-full items-center gap-2">
           <img
             src="/assets/images/apple-icon.png"
-            alt="Google"
+            alt="Apple"
             class="w-5 object-contain"
           />
           <span>Continuer avec Apple</span>
@@ -87,53 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { useForm } from 'vee-validate';
-import { z } from 'zod';
+import LoginForm from '../../components/auth/LoginForm.vue';
 import Button from '../../components/ui/button/Button.vue';
-import Input from '../../components/ui/input/Input.vue';
-import Label from '../../components/ui/label/Label.vue';
 import Separator from '../../components/ui/separator/Separator.vue';
-
-const schema = z.object({
-  email: z.string().email('Veuillez entrer une adresse e-mail valide'),
-  password: z
-    .string()
-    .min(6, 'Le mot de passe doit contenir au moins 6 caractères'),
-});
-
-const { handleSubmit, values, errors } = useForm({
-  validationSchema: schema,
-});
-
-// watch(errors, () => {
-//   console.log('Erreurs:', errors);
-// });
-
-const onSubmit = async (data: { email: string; password: string }) => {
-  console.log('Email:', data.email);
-  console.log('Mot de passe:', data.password);
-  try {
-    const response = await fetch('http://localhost:1337/api/auth/local', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        identifier: data.email,
-        password: data.password,
-      }),
-    });
-
-    const result = await response.json();
-
-    if (response.ok) {
-      console.log('Connexion réussie:', result);
-      // Gérer la connexion réussie
-    } else {
-      console.error('Erreur de connexion:', result);
-    }
-  } catch (error) {
-    console.error('Une erreur est survenue lors de la connexion:', error);
-  }
-};
 </script>

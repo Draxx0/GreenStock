@@ -36,8 +36,29 @@
           <RouterLink
             :to="link.path"
             class="cursor-pointer hover:text-primary transition-colors duration-300 ease-in-out"
+            v-if="link.isDisplayed"
           >
             {{ link.name }}
+          </RouterLink>
+        </li>
+
+        <li v-if="user">
+          <RouterLink
+            :to="STATIC_WEBSITE_LINK.PROFILE"
+            class="cursor-pointer hover:text-primary transition-colors duration-300 ease-in-out"
+          >
+            <Avatar class="active:translate-y-1">
+              <AvatarImage
+                :src="`http://localhost:1337${user.avatar.formats.medium.url}`"
+              />
+              <AvatarFallback>
+                <span class="uppercase text-lg font-bold">
+                  {{ user.username.charAt(0) }}
+                </span>
+              </AvatarFallback>
+              <span class="sr-only">User</span>
+              <AvatarIndicator />
+            </Avatar>
           </RouterLink>
         </li>
 
@@ -65,31 +86,45 @@
 <script setup>
 import { Crown, Pen, Search } from 'lucide-vue-next';
 import { RouterLink } from 'vue-router';
+import Avatar from '../components/ui/avatar/Avatar.vue';
+import AvatarFallback from '../components/ui/avatar/AvatarFallback.vue';
+import AvatarImage from '../components/ui/avatar/AvatarImage.vue';
 import Button from '../components/ui/button/Button.vue';
 import RainbowButton from '../components/ui/button/RainbowButton.vue';
 import Input from '../components/ui/input/Input.vue';
 import { STATIC_WEBSITE_LINK } from '../constants';
+import store from '../store/auth.store';
+
+const isAuthenticated = store.getters.isAuthenticated;
+const user = store.getters.getUser;
+
+console.log('User:', user);
 
 const LINKS = [
   {
     name: 'Articles',
     path: STATIC_WEBSITE_LINK.POSTS,
+    isDisplayed: true,
   },
   {
     name: 'Categories',
     path: STATIC_WEBSITE_LINK.CATEGORIES,
+    isDisplayed: true,
   },
   {
     name: 'Tarifs',
     path: STATIC_WEBSITE_LINK.PRICING,
+    isDisplayed: true,
   },
   {
     name: 'Auteurs',
     path: STATIC_WEBSITE_LINK.AUTHORS,
+    isDisplayed: true,
   },
   {
     name: 'Connexion',
     path: STATIC_WEBSITE_LINK.LOGIN,
+    isDisplayed: isAuthenticated ? false : true,
   },
 ];
 </script>

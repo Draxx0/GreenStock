@@ -6,4 +6,5 @@ export const STATIC_WEBSITE_LINK = {
   POSTS: '/posts',
   LOGIN: '/auth/login',
   SIGNUP: '/auth/signup',
+  PROFILE: '/settings/profile',
 };

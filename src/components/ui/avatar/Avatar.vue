@@ -18,7 +18,15 @@ const props = withDefaults(
 </script>
 
 <template>
-  <AvatarRoot :class="cn(avatarVariant({ size, shape }), props.class)">
+  <AvatarRoot
+    :class="
+      cn(
+        avatarVariant({ size, shape }),
+        'bg-primary-foreground border-2 border-primary hover:shadow-blured transition-all duration-300 ease-in-out hover:-translate-y-1',
+        props.class
+      )
+    "
+  >
     <slot />
   </AvatarRoot>
 </template>
